@@ -1,4 +1,5 @@
 package GamDev;
+
 import com.badlogic.gdx.Game;
 import GamDev.Screens.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,10 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GamDev extends Game {
     public static float ppt = 16;
     public static SpriteBatch sbMain;
+    private ScrMain scrMain;
+    private ScrGame scrGame;
     @Override
     public void create() {
         sbMain = new SpriteBatch();
-        setScreen(new ScrGame());
+        scrMain = new ScrMain(sbMain);
+        setScreen(scrMain);
     }
     @Override
     public void dispose() {
@@ -19,6 +23,10 @@ public class GamDev extends Game {
     @Override
     public void render() {
         super.render();
+        if(scrMain.tbuStart.isPressed()) {
+            scrMain.dispose();
+            setScreen(new ScrGame());
+        }
     }
     @Override
     public void resize(int width, int height) {
@@ -31,5 +39,10 @@ public class GamDev extends Game {
     @Override
     public void resume() {
         super.render();
-    }    
+    }
+    public void StartGame() {
+        setScreen(new ScrGame());
+    }
+    public void ToMenu() {
+    }
 }

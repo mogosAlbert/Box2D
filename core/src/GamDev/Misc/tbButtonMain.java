@@ -11,7 +11,6 @@ public class tbButtonMain extends TextButton {
     public tbButtonMain(String sName, TextButtonStyle tbsMain) {
         super(sName, tbsMain);
         this.sName = sName;
-        this.setSize(100, 50);
         this.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent evt, float x, float y) {

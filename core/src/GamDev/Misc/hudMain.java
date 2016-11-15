@@ -1,4 +1,4 @@
-package GamDev.Huds;
+package GamDev.Misc;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 public class hudMain {
     public Stage stgMain;
+    public int nTime;
     private Table tblMain;
     private Label lblMain;
     private Label lblScore;
@@ -18,7 +19,7 @@ public class hudMain {
     private Label lblCTime;
     private Label lblCScore;
     private Label lblCWorld;
-    private int nTime, nScore, nCounter;
+    private int nScore, nCounter;
     private Viewport Vp;
     
     public hudMain(SpriteBatch Sb) {
