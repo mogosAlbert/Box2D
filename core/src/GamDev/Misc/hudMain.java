@@ -1,5 +1,6 @@
 package GamDev.Misc;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 public class hudMain {
+    private TbButtonMain tbPause;
     public Stage stgMain;
     public int nTime;
     private Table tblMain;
@@ -34,6 +36,10 @@ public class hudMain {
         lblScore = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         lblTime = new Label("Time", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         lblCWorld = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        tbPause = new TbButtonMain ("", new TbPauseSkin());
+        tbPause.setBounds(20, Gdx.graphics.getHeight() - 90, 70, 20);
+        stgMain.addActor(tbPause);
+        Gdx.input.setInputProcessor(stgMain);
     }
     public void draw() {
         nCounter++;

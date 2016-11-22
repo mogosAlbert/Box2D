@@ -70,5 +70,6 @@ public class ScrLevels implements Screen {
 
     @Override
     public void dispose() {
+        stgMain.dispose();
     }  
 }

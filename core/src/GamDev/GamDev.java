@@ -2,6 +2,7 @@ package GamDev;
 
 import com.badlogic.gdx.Game;
 import GamDev.Screens.*;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -12,6 +13,7 @@ public class GamDev extends Game {
     private ScrMain scrMain;
     private ScrGame scrGame;
     private ScrLevels scrLevels;
+    Screen scrTemp;
 
     @Override
     public void create() {
@@ -24,26 +26,33 @@ public class GamDev extends Game {
     @Override
     public void dispose() {
         super.dispose();
+        
     }
 
     @Override
     public void render() {
         super.render();
-        if (scrMain.tbuStart.isPressed()) {
-            scrMain.dispose();
-            setScreen(new ScrGame());
-        }
-        if (scrMain.tbuLevels.isPressed()) {
-            scrMain.dispose();
-            setScreen(new ScrLevels());
-        }
-        if (scrLevels.tbuBack.isPressed()) {
-            scrLevels.dispose();
-            setScreen(new ScrMain());
-        }
-        if (scrLevels.tbuStart.isPressed()) {
-            scrLevels.dispose();
-            setScreen(new ScrGame());
+        if(this.getScreen() == scrMain) {
+            System.out.println("check");
+            if (scrMain.tbuLevels.isPressed()) {
+                this.getScreen().dispose();
+                scrLevels = new ScrLevels();
+                setScreen(scrLevels);
+            } else if (scrMain.tbuStart.isPressed()){
+                this.getScreen().dispose();
+                scrGame = new ScrGame();
+                setScreen(scrGame);
+            }
+        } else if (this.getScreen() == scrLevels) {
+            if(scrLevels.tbuStart.isPressed()) {
+                this.getScreen().dispose();
+                scrGame = new ScrGame();
+                setScreen(scrGame);
+            } else if(scrLevels.tbuBack.isPressed()) {
+                this.getScreen().dispose();
+                scrMain = new ScrMain();
+                setScreen(scrMain);
+            }
         }
     }
 

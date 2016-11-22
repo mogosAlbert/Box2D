@@ -70,5 +70,6 @@ public class ScrMain implements Screen {
 
     @Override
     public void dispose() {
+        stgMain.dispose();
     }  
 }
