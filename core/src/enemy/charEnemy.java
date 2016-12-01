@@ -40,6 +40,7 @@ public class charEnemy extends Sprite {
         setX(followAi(playerVec,enemyVec).x);
         setY(followAi(playerVec,enemyVec).y);
         batch.draw(animation.getKeyFrame(elapsedTime += Gdx.graphics.getDeltaTime(), true), getX(), getY());
+//        batch.draw(this, getX(), getY());
     }
     
     public Vector2 followAi(Vector2 playerVec,Vector2 enemyVec){

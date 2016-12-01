@@ -25,8 +25,8 @@ public class BoxAi extends Game {
 	
 	@Override
 	public void create () {
-            world = new World(new Vector2(0,0f), true);
-            playerVec = new Vector2(50,50);
+            world = new World(new Vector2(0,-98f), false);
+            playerVec = new Vector2(300,300);
             enemyVec = new Vector2(500,500);
             batch = new SpriteBatch();
             mainPlayer = new charPlayer(world,playerVec,enemyVec,batch);
@@ -41,10 +41,12 @@ public class BoxAi extends Game {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 batch.begin();
+                 world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 		mainPlayer.update();
                 enemy.update();
 		batch.end();
 	}
+        
         
        
 }
