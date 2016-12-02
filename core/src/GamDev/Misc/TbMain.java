@@ -4,11 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class TbButtonMain extends TextButton {
+public class TbMain extends TextButton {
 
     String sNam;
 
-    public TbButtonMain(String sName, TextButtonStyle tbsMain) {
+    public TbMain(String sName, TextButtonStyle tbsMain) {
         super(sName, tbsMain);
         this.sNam = sName;
         this.addListener(new ClickListener() {

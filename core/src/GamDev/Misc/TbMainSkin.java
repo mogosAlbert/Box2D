@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class TbSkin extends TextButton.TextButtonStyle {
+public class TbMainSkin extends TextButton.TextButtonStyle {
      private Skin skMain = new Skin();
      private TextureAtlas taMain;
      
-     public TbSkin() {
+     public TbMainSkin() {
          BitmapFont bmfMain = new BitmapFont();
          skMain.add("default", bmfMain);
          taMain = new TextureAtlas("Misc/Buttons.pack");

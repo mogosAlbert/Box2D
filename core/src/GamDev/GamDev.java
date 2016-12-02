@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GamDev extends Game {
 
-    public static float ppt = 16;
+    public static float ppm = 16;
     public static SpriteBatch sbMain;
     private ScrMain scrMain;
     private ScrGame scrGame;
@@ -19,6 +19,7 @@ public class GamDev extends Game {
     public void create() {
         sbMain = new SpriteBatch();
         scrMain = new ScrMain();
+        scrGame = new ScrGame();
         scrLevels = new ScrLevels();
         setScreen(scrMain);
     }
@@ -33,14 +34,12 @@ public class GamDev extends Game {
     public void render() {
         super.render();
         if(this.getScreen() == scrMain) {
-            System.out.println("check");
             if (scrMain.tbuLevels.isPressed()) {
                 this.getScreen().dispose();
                 scrLevels = new ScrLevels();
                 setScreen(scrLevels);
             } else if (scrMain.tbuStart.isPressed()){
                 this.getScreen().dispose();
-                scrGame = new ScrGame();
                 setScreen(scrGame);
             }
         } else if (this.getScreen() == scrLevels) {
@@ -49,6 +48,16 @@ public class GamDev extends Game {
                 scrGame = new ScrGame();
                 setScreen(scrGame);
             } else if(scrLevels.tbuBack.isPressed()) {
+                this.getScreen().dispose();
+                scrMain = new ScrMain();
+                setScreen(scrMain);
+            }
+        } else if (this.getScreen() == scrGame) {
+            if (scrGame.hudMain.tbPause.isPressed()) {
+                scrMain = new ScrMain();
+                setScreen(scrMain);
+            }
+            if(scrGame.hudMain.nTime == 0) {
                 this.getScreen().dispose();
                 scrMain = new ScrMain();
                 setScreen(scrMain);

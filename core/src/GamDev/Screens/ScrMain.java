@@ -1,7 +1,7 @@
 package GamDev.Screens;
 
-import GamDev.Misc.TbButtonMain;
-import GamDev.Misc.TbSkin;
+import GamDev.Misc.TbMain;
+import GamDev.Misc.TbMainSkin;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ScrMain implements Screen {
     
-    public TbButtonMain tbuStart, tbuLevels;
+    public TbMain tbuStart, tbuLevels;
     
     private Stage stgMain;
     private Table tblMain;
@@ -28,8 +28,8 @@ public class ScrMain implements Screen {
         vpMain = new FitViewport(1000, 700, new OrthographicCamera());
         stgMain = new Stage(vpMain, GamDev.GamDev.sbMain);
         tblMain = new Table();
-        tbuStart = new TbButtonMain("Start", new TbSkin());
-        tbuLevels = new TbButtonMain("Levels", new TbSkin());
+        tbuStart = new TbMain("Start", new TbMainSkin());
+        tbuLevels = new TbMain("Levels", new TbMainSkin());
         lblMain = new Label("Welcome!", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         lblMain.setFontScale(3);
         lblMain.setPosition(500, 500);

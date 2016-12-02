@@ -40,44 +40,42 @@ public class SprMain extends Sprite {
         this.worlMain = scrMain.worlMain;
         fTimer = 0;
         vVelocity = new Vector2();
-        setSize(20, 25);
+        setBounds(fX, fY,  32, 47);
         imgWolv = new TextureAtlas("Wolverine/Wolverine.pack");
         aniStand = getAnimation("Stand", 3, imgWolv, 12f);
         aniWalk = getAnimation("Walk", 6, imgWolv, 9f);
         aniJump = getAnimation("Jump", 3, imgWolv, 25f);
         aniAttack = getAnimation("Attack", 4, imgWolv, 12f);
         texFall = new TextureRegion(imgWolv.findRegion("Falling"));
-        setX(fX);
-        setY(fY);
         bdMain = new BodyDef();
         bdMain.position.set(getX(), getY());
         bdMain.type = BodyDef.BodyType.DynamicBody;
         bodMain = worlMain.createBody(bdMain);
         PolygonShape pShape = new PolygonShape();
-        pShape.setAsBox(getWidth() / 2, getHeight() / 2, new Vector2(bodMain.getLocalCenter().x / 2, bodMain.getLocalCenter().y / 2 + 0.5f), 0);
+        pShape.setAsBox(getWidth() / 2 / GamDev.GamDev.ppm, getHeight() / 2 / GamDev.GamDev.ppm - 1f / GamDev.GamDev.ppm, new Vector2(bodMain.getLocalCenter().x / 2, bodMain.getLocalCenter().y / 2 + 0.5f / GamDev.GamDev.ppm), 0);
         fdMain = new FixtureDef();
         fdMain.shape = pShape;
-        fdMain.friction = 0f;
         bodMain.createFixture(fdMain);
         fdFeet = new FixtureDef();
-        pShape.setAsBox(getWidth() / 2 - 2, 1, new Vector2(bodMain.getLocalCenter().x / 2, bodMain.getLocalCenter().y / 2 - (getHeight() / 2) + 1), 0);
+        pShape.setAsBox((getWidth() / 2 - 2) / GamDev.GamDev.ppm, 1 / GamDev.GamDev.ppm, new Vector2(bodMain.getLocalCenter().x / 2, (bodMain.getLocalCenter().y / 2 - (getHeight() / 2) + 1) / GamDev.GamDev.ppm), 0);
         fdFeet.shape = pShape;
-        fdFeet.friction = 10f;
         bodMain.createFixture(fdFeet);
     }
 
     @Override
     public void draw(Batch batch) {
+        this.update(Gdx.graphics.getDeltaTime());
         super.draw(batch);
     }
 
     public void update(float fDelta) {
         fTimer++;
         if (Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            bodMain.applyLinearImpulse(new Vector2(0, 100f), bodMain.getWorldCenter(), true);
+            bodMain.applyLinearImpulse(new Vector2(0, 10f), bodMain.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             isAttack = true;
+            setSize(32 / GamDev.GamDev.ppm, 47 / GamDev.GamDev.ppm);
             fTimer = 0;
         }
         if (bodMain.getLinearVelocity().y == 0) {
@@ -91,14 +89,14 @@ public class SprMain extends Sprite {
             isFlip = true;
         }
         if (bodMain.getLinearVelocity().y == 0) {
-            setSize(20, 25);
+            setSize(32 / GamDev.GamDev.ppm, 47 / GamDev.GamDev.ppm);
 
             if (isAttack) {
                 if(nRange < 9) {
                     nRange += 2;
                 }
                 setRegion(getFrame(aniAttack));
-                setSize(getFrame(aniAttack).getRegionWidth() / 2.7f, getFrame(aniAttack).getRegionHeight() / 2.7f);
+                setSize(getFrame(aniAttack).getRegionWidth() * 0.6f / GamDev.GamDev.ppm, getFrame(aniAttack).getRegionHeight() * 0.6f / GamDev.GamDev.ppm);
             } else {
                 if (bodMain.getLinearVelocity().x != 0) {
                     setRegion(getFrame(aniWalk));
@@ -110,16 +108,16 @@ public class SprMain extends Sprite {
             if (bodMain.getLinearVelocity().y > 0) {
                 System.out.println("f");
                 setRegion(getFrame(aniJump));
-                setSize(getFrame(aniJump).getRegionWidth() / 2.7f, getFrame(aniJump).getRegionHeight() / 2.7f);
+                setSize(getFrame(aniJump).getRegionWidth() / GamDev.GamDev.ppm * 0.6f, getFrame(aniJump).getRegionHeight() / GamDev.GamDev.ppm * 0.6f);
             } else {
-                setSize(20, 25);
+                setSize(20 / GamDev.GamDev.ppm, 25 / GamDev.GamDev.ppm);
                 if (isFlip && !texFall.isFlipX()) {
                     texFall.flip(true, false);
                 } else if (!isFlip && texFall.isFlipX()) {
                     texFall.flip(true, isFlip);
                 }
                 setRegion(texFall);
-                setSize(texFall.getRegionWidth() / 2.7f, texFall.getRegionHeight() / 2.7f);
+                setSize((texFall.getRegionWidth() / GamDev.GamDev.ppm) * 0.6f, (texFall.getRegionHeight() / GamDev.GamDev.ppm) * 0.6f);
             }
         }
     }
