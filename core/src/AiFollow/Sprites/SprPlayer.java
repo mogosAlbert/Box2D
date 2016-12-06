@@ -23,7 +23,7 @@ public final class SprPlayer extends Sprite {
     GameEngine GE;
     boolean bFlip;
     public Vector2 vecLocation;
-    private Body bMain;
+    public Body bMain;
     
     public SprPlayer(World wTemp){
         atlas = new TextureAtlas("run/megapack.pack");

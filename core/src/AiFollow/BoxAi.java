@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import AiFollow.Sprites.SprEnemy;
 import AiFollow.Sprites.SprPlayer;
 import AiFollow.Tools.GameEngine;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -53,6 +54,7 @@ public class BoxAi extends Game {
     @Override
     public void render() {
         super.render();
+        input();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         wMain.step(Gdx.graphics.getDeltaTime(), 6, 2);
@@ -63,5 +65,13 @@ public class BoxAi extends Game {
         sprPlayer.draw(batch);
         batch.end();
         B2DR.render(wMain, ocMain.combined);
+    }
+    
+    public void input() {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            sprPlayer.bMain.applyForce(new Vector2( -6f, 0), sprPlayer.bMain.getLocalCenter(), true);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            sprPlayer.bMain.applyForce(new Vector2( 6f, 0), sprPlayer.bMain.getLocalCenter(), true);
+        }
     }
 }
