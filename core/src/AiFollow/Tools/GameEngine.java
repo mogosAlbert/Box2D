@@ -6,9 +6,11 @@ package AiFollow.Tools;
 
 import AiFollow.Screens.ScrMain;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -62,6 +64,8 @@ public class GameEngine {
             } else if(mObj instanceof RectangleMapObject) {
                 fdTemp = createRectangleFixture((RectangleMapObject) mObj);
                 bdTemp.position.set(getRectangleCoordinates((RectangleMapObject) mObj));
+            } else if(mObj instanceof PolygonMapObject) {
+                fdTemp = createPolygonFixture((PolygonMapObject) mObj);
             }
             Body bTemp = wTemp.createBody(bdTemp);
             bTemp.createFixture(fdTemp);
@@ -78,7 +82,6 @@ public class GameEngine {
             vecPoints[i].y = fCoordinates[i * 2 + 1] / ppm;
         }
         ChainShape csTemp = new ChainShape();
-        System.out.println("0");
         csTemp.createChain(vecPoints);
         fdTemp.shape = csTemp;
         fdTemp.friction = 0.5f;
@@ -98,5 +101,20 @@ public class GameEngine {
         Rectangle rectTemp = rmObj.getRectangle();
         Vector2 vecLocation = new Vector2((rectTemp.getX() + rectTemp.width / 2) / ppm, (rectTemp.getY() + rectTemp.height / 2) / ppm);
         return vecLocation;
+    }
+
+    private FixtureDef createPolygonFixture(PolygonMapObject pmObj) {
+        float[] fVerticies = pmObj.getPolygon().getTransformedVertices();
+        Vector2[] vecPoints = new Vector2[fVerticies.length / 2];
+        for(int i = 0; i < fVerticies.length / 2; i++) {
+            vecPoints[i] = new Vector2();
+            vecPoints[i].x = fVerticies[i * 2] / ppm;
+            vecPoints[i].y = fVerticies[i * 2 + 1] / ppm;
+        }
+        PolygonShape psTemp = new PolygonShape();
+        psTemp.set(vecPoints);
+        FixtureDef fdTemp = new FixtureDef();
+        fdTemp.shape = psTemp;
+        return fdTemp;
     }
 }

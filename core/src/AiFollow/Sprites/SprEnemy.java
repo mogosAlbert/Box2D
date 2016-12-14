@@ -31,7 +31,7 @@ public class SprEnemy extends Sprite {
         atlas = new TextureAtlas("run/megapack.pack");
         animation = new Animation(1 / 10f, atlas.getRegions());
         vecLocation = new Vector2(500 / ScrMain.ppm, 300 / ScrMain.ppm);
-        setSize(50 / ScrMain.ppm, 50 / ScrMain.ppm);
+        setSize(30 / ScrMain.ppm, 30 / ScrMain.ppm);
         bMain = wTemp.createBody(GE.createBodyDef(wTemp, vecLocation));
         bMain.createFixture(GE.createFixtureDef(getWidth(), getHeight(), bMain.getLocalCenter()));
     }

@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ScrMain implements Screen {
 
-    public static int ppm = 18;
+    public static float ppm = 18;
     OrthographicCamera ocMain;
     OrthogonalTiledMapRenderer otmrMain;
     TiledMap tmMap1;
@@ -35,7 +35,7 @@ public class ScrMain implements Screen {
     @Override
     public void show() {
         GE = new GameEngine();
-        tmMap1 = new TmxMapLoader().load("Maps/AItest.tmx");
+        tmMap1 = new TmxMapLoader().load("Maps/DevMap2.tmx");
         otmrMain = new OrthogonalTiledMapRenderer(tmMap1,(float) 1 / ppm);
         B2DR = new Box2DDebugRenderer();
         ocMain = new OrthographicCamera();
@@ -43,8 +43,10 @@ public class ScrMain implements Screen {
         wMain = new World(new Vector2(0, -9f), false);
         batch = new SpriteBatch();
         sprPlayer = new SprPlayer(wMain);
-        GE.loadMapLayer(1, wMain, tmMap1);
-        GE.loadMapLayer(2, wMain, tmMap1);
+        GE.loadMapLayer(4, wMain, tmMap1);
+        GE.loadMapLayer(5, wMain, tmMap1);
+        GE.loadMapLayer(6, wMain, tmMap1);
+        GE.loadMapLayer(7, wMain, tmMap1);
         //sprEnemy = new SprEnemy(wMain);
     }
 
@@ -63,13 +65,15 @@ public class ScrMain implements Screen {
         input();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        wMain.step(Gdx.graphics.getDeltaTime(), 6, 2);
+        wMain.step(1 / 60f, 6, 2);
         System.out.println(ocMain.position);
         //sprEnemy.update(sprPlayer.vecLocation);
         otmrMain.setView(ocMain);
         otmrMain.render();
         otmrMain.getBatch().begin();
         //sprEnemy.draw(otmrMain.getBatch());
+        ocMain.position.x = sprPlayer.getX();
+        ocMain.update();
         sprPlayer.draw(otmrMain.getBatch());
         otmrMain.getBatch().end();
         B2DR.render(wMain, ocMain.combined);

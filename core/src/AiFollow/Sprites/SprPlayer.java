@@ -30,8 +30,8 @@ public final class SprPlayer extends Sprite {
         bCanJump = true;
         atlas = new TextureAtlas("run/megapack.pack");
         animation = new Animation(10f,atlas.getRegions());
-        vecLocation = new Vector2(200 / ScrMain.ppm, 400 / ScrMain.ppm);
-        setSize(50 / ScrMain.ppm, 50 / ScrMain.ppm);
+        vecLocation = new Vector2(200 / ScrMain.ppm, 40 / ScrMain.ppm);
+        setSize(30 / ScrMain.ppm, 30 / ScrMain.ppm);
         GE = new GameEngine();
         bMain = wTemp.createBody(GE.createBodyDef(wTemp, vecLocation));
         bMain.createFixture(GE.createFixtureDef(getWidth(), getHeight(), bMain.getLocalCenter()));
@@ -43,7 +43,7 @@ public final class SprPlayer extends Sprite {
         setPosition(vecLocation.x - getWidth() / 2, vecLocation.y  - getHeight() / 2);
         if(bCanJump) {
             if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                bMain.applyLinearImpulse(new Vector2(0, 15), bMain.getLocalCenter(), true);
+                bMain.applyLinearImpulse(new Vector2(0, 20), bMain.getLocalCenter(), true);
                 bCanJump = false;
             }
         } else {
