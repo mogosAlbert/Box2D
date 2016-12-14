@@ -4,7 +4,7 @@
  */
 package AiFollow.Sprites;
 
-import AiFollow.BoxAi;
+import AiFollow.Screens.ScrMain;
 import AiFollow.Tools.GameEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -30,8 +30,8 @@ public class SprEnemy extends Sprite {
         GE = new GameEngine();
         atlas = new TextureAtlas("run/megapack.pack");
         animation = new Animation(1 / 10f, atlas.getRegions());
-        vecLocation = new Vector2(500 / BoxAi.ppm, 300 / BoxAi.ppm);
-        setSize(50 / BoxAi.ppm, 50 / BoxAi.ppm);
+        vecLocation = new Vector2(500 / ScrMain.ppm, 300 / ScrMain.ppm);
+        setSize(50 / ScrMain.ppm, 50 / ScrMain.ppm);
         bMain = wTemp.createBody(GE.createBodyDef(wTemp, vecLocation));
         bMain.createFixture(GE.createFixtureDef(getWidth(), getHeight(), bMain.getLocalCenter()));
     }
@@ -42,32 +42,21 @@ public class SprEnemy extends Sprite {
     }
 
     public void update(Vector2 playerVec) {
-        vecNLocation = followAi(playerVec, vecLocation);
-        if (vecNLocation.x < getX()) {
-            isFlip = true;
-        } else if (vecNLocation.x > getX()) {
-            isFlip = false;
-        }
-        bMain.setTransform(new Vector2(vecLocation.x, bMain.getPosition().y), 0);
-        setPosition(vecNLocation.x - getWidth() / 2, bMain.getPosition().y - getHeight() / 2);
-        setRegion(getRegion(animation, isFlip));
+        followAi(playerVec);
+        setPosition(bMain.getPosition().x - getWidth() / 2, bMain.getPosition().y - getHeight() / 2);
+        setRegion(animation.getKeyFrame(Gdx.graphics.getDeltaTime()));
     }
 
-    public Vector2 followAi(Vector2 playerVec, Vector2 enemyVec) {
-        Vector2 tempVec = playerVec;
-        tempVec.sub(enemyVec).nor();
-        enemyVec.x += tempVec.x / BoxAi.ppm;
-        return enemyVec;
-    }
-
-    public TextureRegion getRegion(Animation aniTemp, boolean isFlip) {
-        TextureRegion texTemp;
-        texTemp = aniTemp.getKeyFrame(Gdx.graphics.getDeltaTime(), true);
-        if (isFlip && !texTemp.isFlipX()) {
-            texTemp.flip(true, false);
-        } else if (!isFlip && texTemp.isFlipX()) {
-            texTemp.flip(true, false);
+    public void followAi(Vector2 playerVec) {
+        int nChange = 0;
+        int nSpeed = 5;
+        System.out.println(Math.abs(playerVec.x * ScrMain.ppm - getX() * ScrMain.ppm));
+        if(Math.abs(playerVec.x * ScrMain.ppm - getX() * ScrMain.ppm) < 200) {
+            if(playerVec.x > getX()) {
+                bMain.applyForce(new Vector2(nSpeed, 0), bMain.getLocalCenter(), true);
+            } else if (playerVec.x < getX()) {
+                bMain.applyForce(new Vector2(nSpeed * -1, 0), bMain.getLocalCenter(), true);
+            }
         }
-        return texTemp;
     }
 }

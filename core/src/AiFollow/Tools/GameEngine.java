@@ -4,12 +4,19 @@
  */
 package AiFollow.Tools;
 
-import AiFollow.BoxAi;
+import AiFollow.Screens.ScrMain;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -17,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author mogoa7209
  */
 public class GameEngine {
-    
+    private float ppm = ScrMain.ppm;
     public BodyDef createBodyDef(World wTemp, Vector2 vecLocation) {  
         BodyDef bdTemp = new BodyDef();
         bdTemp.position.set(vecLocation);
@@ -36,12 +43,60 @@ public class GameEngine {
         Body bodFloor;
         BodyDef bdTemp = new BodyDef();
         bdTemp.type = BodyDef.BodyType.StaticBody;
-        bdTemp.position.set(0, (-fHeight / BoxAi.ppm) / 2 + 30 - 6);
+        bdTemp.position.set(0, 0);
         bodFloor = wTemp.createBody(bdTemp);
         PolygonShape psTemp = new PolygonShape();
-        psTemp.setAsBox(fWidth, 30 / BoxAi.ppm, bdTemp.position, 0);
+        psTemp.setAsBox(fWidth, 30 / ppm, bdTemp.position, 0);
         FixtureDef fdMain = new FixtureDef();
         fdMain.shape = psTemp;
         bodFloor.createFixture(fdMain);
+    }
+    
+    public void loadMapLayer(int nLayer, World wTemp, TiledMap tmTemp) {
+        for(MapObject mObj: tmTemp.getLayers().get(nLayer).getObjects()) {
+            FixtureDef fdTemp = null;
+            BodyDef bdTemp = new BodyDef();
+            bdTemp.type = BodyDef.BodyType.StaticBody;
+            if(mObj instanceof PolylineMapObject) {
+                fdTemp = createPolylineFixture((PolylineMapObject) mObj);
+            } else if(mObj instanceof RectangleMapObject) {
+                fdTemp = createRectangleFixture((RectangleMapObject) mObj);
+                bdTemp.position.set(getRectangleCoordinates((RectangleMapObject) mObj));
+            }
+            Body bTemp = wTemp.createBody(bdTemp);
+            bTemp.createFixture(fdTemp);
+        }
+    }
+
+    private FixtureDef createPolylineFixture(PolylineMapObject pmObj) {
+        FixtureDef fdTemp = new FixtureDef();
+        float[] fCoordinates = pmObj.getPolyline().getTransformedVertices();
+        Vector2[] vecPoints = new Vector2[fCoordinates.length / 2];
+        for(int i = 0; i < vecPoints.length; i++) {
+            vecPoints[i] = new Vector2();
+            vecPoints[i].x = fCoordinates[i * 2] / ppm;
+            vecPoints[i].y = fCoordinates[i * 2 + 1] / ppm;
+        }
+        ChainShape csTemp = new ChainShape();
+        System.out.println("0");
+        csTemp.createChain(vecPoints);
+        fdTemp.shape = csTemp;
+        fdTemp.friction = 0.5f;
+        return fdTemp;
+    }
+
+    private FixtureDef createRectangleFixture(RectangleMapObject rmObj) {
+        Rectangle rectTemp = rmObj.getRectangle();
+        FixtureDef fdTemp = new FixtureDef();
+        PolygonShape psTemp = new PolygonShape();
+        psTemp.setAsBox(rectTemp.width / 2 / ppm, rectTemp.height / 2 / ppm);
+        fdTemp.shape = psTemp;
+        return fdTemp;
+    }
+
+    private Vector2 getRectangleCoordinates(RectangleMapObject rmObj) {
+        Rectangle rectTemp = rmObj.getRectangle();
+        Vector2 vecLocation = new Vector2((rectTemp.getX() + rectTemp.width / 2) / ppm, (rectTemp.getY() + rectTemp.height / 2) / ppm);
+        return vecLocation;
     }
 }
