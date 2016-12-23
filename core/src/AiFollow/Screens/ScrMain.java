@@ -40,7 +40,7 @@ public class ScrMain implements Screen {
         B2DR = new Box2DDebugRenderer();
         ocMain = new OrthographicCamera();
         vpMain = new FitViewport(1000 / ppm, 500 / ppm, ocMain);
-        wMain = new World(new Vector2(0, -9f), false);
+        wMain = new World(new Vector2(0, -11f), false);
         batch = new SpriteBatch();
         sprPlayer = new SprPlayer(wMain);
         GE.loadMapLayer(4, wMain, tmMap1);
